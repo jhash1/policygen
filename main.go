@@ -10,10 +10,13 @@ type NetworkPolicy struct {
 	ApiVersion string            `yaml:"apiVersion"`
 	Kind       string            `yaml:"kind"`
 	Metadata   map[string]string `yaml:"metadata"`
+	//next part is coming up with the whole YAML such as the spec file,
+	//creating the framework for Cobra CLI and avail options. Ill add to spreadsheet
+	//add user input
 }
 
 func main() {
-	// Marshal a Person struct to YAML.
+	// Marshal a NP struct to YAML.
 	np := &NetworkPolicy{"networking.k8s.io/v1",
 		"NetworkPolicy",
 		map[string]string{"name": "allowingresspolicy", "namespace": "insights-agent"},
