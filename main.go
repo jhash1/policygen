@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 
 	"gopkg.in/yaml.v2"
@@ -13,14 +14,11 @@ type Metadata struct {
 
 type Spec struct {
 	PodSelector NetworkPolicySpecPodSelector `yaml:"podSelector"`
+	PolicyTypes []string                     `yaml:"policyTypes"`
 }
 
 type NetworkPolicySpecPodSelector struct {
 	MatchLabels map[string]string `yaml:"matchLabels"`
-	PolicyTypes []string          `yaml:"policyTypes"`
-}
-
-type Ingress struct {
 }
 
 type NetworkPolicy struct {
@@ -42,11 +40,13 @@ func main() {
 			PodSelector: NetworkPolicySpecPodSelector{
 				MatchLabels: map[string]string{
 					"env": "prod"},
-				PolicyTypes: []string{"Ingress", "Egress"},
 			},
+			PolicyTypes: []string{"Ingress", "Egress"},
 		},
 	}
-
+	flag.StringVar(&np.Metadata.Name, "name", "", "Specify Name for the Network Policy")
+	flag.StringVar(&np.Metadata.Namespace, "namespace", "", "Specify Namespace for the Network Policy")
+	flag.Parse()
 	yamlData, _ := yaml.Marshal(&np)
 	fmt.Println(string(yamlData))
 }
