@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -47,8 +48,8 @@ func main() {
 	flag.StringVar(&np.Metadata.Name, "name", "", "Specify Name for the Network Policy")
 	flag.StringVar(&np.Metadata.Namespace, "namespace", "", "Specify Namespace for the Network Policy")
 	flag.Func("labels", "key value pair for policy labels", func(flagValue string) error {
-
-		np.Spec.PodSelector.MatchLabels[string(flagValue)] = flagValue
+		s := strings.Split(flagValue, "=")
+		np.Spec.PodSelector.MatchLabels[(s[0])] = s[1]
 		return nil
 	},
 	)
