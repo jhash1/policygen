@@ -38,14 +38,21 @@ func main() {
 		},
 		Spec: Spec{
 			PodSelector: NetworkPolicySpecPodSelector{
-				MatchLabels: map[string]string{
-					"env": "prod"},
+				MatchLabels: map[string]string{},
 			},
 			PolicyTypes: []string{"Ingress", "Egress"},
 		},
 	}
+
 	flag.StringVar(&np.Metadata.Name, "name", "", "Specify Name for the Network Policy")
 	flag.StringVar(&np.Metadata.Namespace, "namespace", "", "Specify Namespace for the Network Policy")
+	flag.Func("labels", "key value pair for policy labels", func(flagValue string) error {
+
+		np.Spec.PodSelector.MatchLabels[string(flagValue)] = flagValue
+		return nil
+	},
+	)
+
 	flag.Parse()
 	yamlData, _ := yaml.Marshal(&np)
 	fmt.Println(string(yamlData))
