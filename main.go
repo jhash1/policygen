@@ -45,9 +45,9 @@ func main() {
 		},
 	}
 
-	flag.StringVar(&np.Metadata.Name, "name", "", "Specify Name for the Network Policy")
+	flag.StringVar(&np.Metadata.Name, "name", "", "Choose a Name for the Network Policy")
 	flag.StringVar(&np.Metadata.Namespace, "namespace", "", "Specify Namespace for the Network Policy")
-	flag.Func("labels", "key value pair for policy labels", func(flagValue string) error {
+	flag.Func("labels", "Specify a key value pair for policy labels using =. app=dev", func(flagValue string) error {
 		s := strings.Split(flagValue, "=")
 		np.Spec.PodSelector.MatchLabels[(s[0])] = s[1]
 		return nil
